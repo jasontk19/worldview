@@ -43,6 +43,7 @@ const longName = brand.longName || brand.name;
 const shortName = brand.shortName || brand.name;
 const email = brand.email || 'support@example.com';
 const url = brand.url || 'https://worldview.earthdata.nasa.gov/';
+const buildNumber = moment.utc().format('YYMMDDHHmmss');
 
 shell.sed('-i', /@OFFICIAL_NAME@/g, officialName, applyTo);
 shell.sed('-i', /@URL@/g, url, applyTo);
@@ -52,6 +53,8 @@ shell.sed('-i', /@MAIL@/g, email, applyTo);
 shell.sed('-i', /@BUILD_NONCE/g, buildNonce, applyTo);
 shell.sed('-i', /@BUILD_TIMESTAMP@/g, buildTimestamp, applyTo);
 shell.sed('-i', /@BUILD_VERSION@/g, pkg.version, applyTo);
+shell.sed('-i', /@WORLDVIEW@/g, 'worldview', applyTo);
+shell.sed('-i', /@BUILD_NUMBER@/g, buildNumber, applyTo);
 
 // replace google tag manager id
 const googleTagManagerID = GTM_ID || '';

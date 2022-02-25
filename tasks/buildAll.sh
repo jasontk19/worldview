@@ -15,8 +15,3 @@ export npm_config_unsafe_perm=true
 npm install --production=false
 
 npm run dist
-node rpm/buildRPM.js
-
-# This is where bamboo expects to find artifacts
-mv ~/rpmbuild build/rpm
-
