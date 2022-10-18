@@ -13,6 +13,7 @@ import {
 } from '../../modules/natural-events/actions';
 import util from '../../util/util';
 import DateRangeSelector from '../date-selector/date-range-selector';
+import { CRS } from '../../modules/map/constants';
 
 function EventFilterModalBody (props) {
   const {
@@ -25,6 +26,7 @@ function EventFilterModalBody (props) {
     showAll,
     parentId,
     isPolarProj,
+    isMobile,
   } = props;
 
   const [allNone, setAllNone] = useState(!!selectedCategories.length);
@@ -80,6 +82,10 @@ function EventFilterModalBody (props) {
   const minDate = new Date('2000-01-01');
   const maxDate = util.now();
 
+  const mobileStyle = isMobile ? {
+    fontSize: '14px',
+  } : null;
+
   return (
     <div className="events-filter">
       <DateRangeSelector
@@ -94,7 +100,7 @@ function EventFilterModalBody (props) {
 
       <div className="category-toggles">
         <div className="classification-switch-header">
-          <h2 className="wv-header">Disable/Enable</h2>
+          <h2 className="wv-header" style={mobileStyle}>Disable/Enable</h2>
           <Switch
             id="header-disable"
             label="All"
@@ -174,15 +180,18 @@ EventFilterModalBody.propTypes = {
   selectedEndDate: PropTypes.string,
   setFilter: PropTypes.func,
   showAll: PropTypes.bool,
+  isMobile: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
-  const { events, proj, config } = state;
+  const {
+    events, proj, config, screenSize,
+  } = state;
   const {
     selectedCategories, selectedDates, showAll,
   } = events;
 
-  const isPolarProj = proj.selected.crs === 'EPSG:3031' || proj.selected.crs === 'EPSG:3413';
+  const isPolarProj = proj.selected.crs === CRS.ANTARCTIC || proj.selected.crs === CRS.ARCTIC;
 
   return {
     isPolarProj,
@@ -191,6 +200,8 @@ const mapStateToProps = (state) => {
     selectedStartDate: selectedDates.start,
     selectedEndDate: selectedDates.end,
     showAll,
+    isMobile: screenSize.isMobileDevice,
+    screenHeight: screenSize.screenHeight,
   };
 };
 
